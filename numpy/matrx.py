@@ -35,4 +35,8 @@ np.linalg.solve(aq,qw)
 # Ax = y  |===| x = A**-1 *y
 inv_a = np.linalg.inv(aq)
 inv_a @ qw  #те же корни уравнения
-
+dt = np.array([[0,-4,1],[4,5,1]])
+yg = np.array([0,0])
+invdt = np.linalg.inv(dt.T)
+w = invdt @ yg
+print(w)
