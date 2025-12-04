@@ -2,7 +2,6 @@
 
 import numpy as np
 
-
 x_train = np.array([[10, 50], [20, 30], [25, 30], [20, 60], [15, 70], [40, 40], [30, 45], [20, 45], [40, 30], [7, 35]])
 y_train = np.array([-1, 1, 1, -1, -1, 1, 1, -1, 1, -1])
 
@@ -29,5 +28,5 @@ for x in x_train:
     pr.append(np.argmax([a_1(x), a1(x)]) * 2 - 1)
 
 pr = np.array(pr)
-Q = np.mean(pr != y_train) # доля ошибок
+Q = np.mean(pr != y_train)  # доля ошибок
 print(Q)

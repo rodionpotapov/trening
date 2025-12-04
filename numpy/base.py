@@ -63,6 +63,3 @@ iter = np.fromiter("hello", dtype = "U1") #создает массив по лю
 
 
 
-
-
-

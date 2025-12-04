@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 # исходные параметры распределений двух классов
 r1 = 0.7
 D1 = 1.0
@@ -41,9 +39,10 @@ Py2, L2 = 1 - Py1, 1  # и величины штрафов неверной кл
 
 # здесь продолжайте программу
 predict = []
-b = lambda x, v, m, l, py: np.log(l * py) - 0.5 * (x - m) @ np.linalg.inv(v) @ (x - m).T - 0.5 * np.log(np.linalg.det(v))
+b = lambda x, v, m, l, py: np.log(l * py) - 0.5 * (x - m) @ np.linalg.inv(v) @ (x - m).T - 0.5 * np.log(
+    np.linalg.det(v))
 for i in range(len(x_train)):
-    a = np.argmax([b(x_train[i], VV1, mm1, L1, Py1), b(x_train[i], VV2, mm2, L2, Py2)]) * 2 -1   # классификатор
+    a = np.argmax([b(x_train[i], VV1, mm1, L1, Py1), b(x_train[i], VV2, mm2, L2, Py2)]) * 2 - 1  # классификатор
     predict.append(a)
 
 Q = np.mean(predict != y_train)
