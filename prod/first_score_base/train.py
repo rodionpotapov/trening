@@ -6,7 +6,7 @@ from sklearn import svm
 import joblib
 from sklearn.model_selection import GridSearchCV
 import numpy as np
-
+from sklearn.preprocessing import StandardScaler
 
 data = pd.read_csv("/Users/rodion/PycharmProjects/trening/pandas/datasets/scoring.csv")
 print(data.head(5))
@@ -19,15 +19,24 @@ x_train, x_test, y_train, y_test = train_test_split(
     X, Y, test_size=0.2
 )  # hold_out: 80% - train, 20% - валидация
 
+
+x_train = StandardScaler().fit_transform(x_train)
+x_test = StandardScaler().fit_transform(x_test)
+
 model = LogisticRegression(
     class_weight="balanced",
-    penalty="l2",
+    penalty="l1",
+    solver="saga",
+    n_jobs=-1,
 )  # увеличение штрафа за неверную классификацию
 
 
 model.fit(x_train, y_train)
 
-y_pred = model.predict(x_test)  # предсказание модели
+y_pred = model.predict(x_test)
+
+# proba = model.predict_proba(x_test)[:, 1]  # предсказание модели
+# y_pred = (proba > 0.6).astype(int)
 
 """метрики"""
 precision = precision_score(y_test, y_pred)
