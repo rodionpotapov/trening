@@ -6,6 +6,7 @@ from fastapi import FastAPI, Header
 from pydantic import BaseModel
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
+
 from activate import DATABASE_URL
 from db_data import DataNeeded, ClientData
 
@@ -54,8 +55,9 @@ def session(client_id: int):
 
 
 @app.post("/predict")
-def predict(form: ClientForm, x_client_id: int):
+def predict(form: ClientForm, x_client_id: int = Header(..., alias="X-Client-Id")):
     client_id = int(x_client_id)
+    payload = form.model_dump()
 
     with SessionLocal() as session:
         stmt_bank = select(DataNeeded).where(DataNeeded.client_id == client_id)
@@ -64,7 +66,7 @@ def predict(form: ClientForm, x_client_id: int):
         if bank_obj is None:
             return {
                 "status": "manual_review",
-                "message": "Недостаточно данных. Вы будете перенаправлены к специалисту для уточнения деталей."
+                "message": "Недостаточно данных. Вы будете перенаправлены к специалисту для уточнения деталей.❤️"
             }
 
         bank = {
@@ -74,8 +76,6 @@ def predict(form: ClientForm, x_client_id: int):
             "cb_person_default_on_file": bank_obj.cb_person_default_on_file,
             "cb_person_cred_hist_length": bank_obj.cb_person_cred_hist_length,
         }
-
-        payload = form.model_dump()
 
         stmt_client = select(ClientData).where(ClientData.client_id == client_id)
         client_obj = session.execute(stmt_client).scalar_one_or_none()
@@ -87,12 +87,14 @@ def predict(form: ClientForm, x_client_id: int):
             for k, v in payload.items():
                 setattr(client_obj, k, v)
 
+        df = build_df(payload, bank)
+
+        p = float(model.predict_proba(df)[:, 1][0])
+        y = int(p >= threshold)
+
+        bank_obj.loan_status_predicted = y
+
         session.commit()
-
-    df = build_df(payload, bank)
-
-    p = float(model.predict_proba(df)[:, 1][0])
-    y = int(p >= threshold)
 
     return {
         "status": "ok",

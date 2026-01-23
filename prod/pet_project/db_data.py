@@ -17,6 +17,7 @@ class DataNeeded(Base):
 
     cb_person_default_on_file: Mapped[str | None] = mapped_column(String(1), nullable=True)
     cb_person_cred_hist_length: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    loan_status_predicted: Mapped[int | None] = mapped_column(nullable = True)
 
 
 class ClientData(Base):
