@@ -89,6 +89,6 @@ print(f"Точность: {precision * 100:.2f}%")
 print(f"Полнота: {recall * 100:.2f}%")
 print(f"F1: {f1 * 100:.2f}%")
 
-# 9. (опционально) Смотрим важности признаков
+# 9. Смотрим важности признаков
 feature_importances = best_model.feature_importances_
 print("Важности признаков:", feature_importances)

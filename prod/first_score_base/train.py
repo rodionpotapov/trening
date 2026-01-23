@@ -47,6 +47,6 @@ print(f"Точность: {precision * 100:.2f}%")
 print(f"Полнота: {recall * 100:.2f}%")
 
 
-joblib.dump(
-    model, "../models/model.pkl"
-)  # бинарный файл с моделью которая получилась после обучения
+# joblib.dump(
+#     model, "../models/model.pkl"
+# )  # бинарный файл с моделью которая получилась после обучения

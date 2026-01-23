@@ -1,7 +1,6 @@
 from pyexpat import features
 
 from fastapi import FastAPI
-from numpy.ma.testutils import approx
 from pydantic import BaseModel
 import joblib
 
