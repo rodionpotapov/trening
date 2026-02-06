@@ -132,8 +132,7 @@ for n in range(T):
 
 
 # вычисляем число ошибок классификации на основе полученной композиции
-predicted = alfa[0] * algs[0].predict(train_data)
-for n in range(1, T):
+for n in range(0, T):
     predicted += alfa[n] * algs[n].predict(train_data)
     print(predicted)
 
